@@ -13,7 +13,7 @@ define(['N/record', 'N/search', 'N/log'],
                 var itemSearch = search.create({
                     type: search.Type.ITEM,
                     filters: [],
-                    columns: ['displayname', 'purchasedescription', 'salesdescription']
+                    columns: ['displayname', 'purchasedescription', 'salesdescription', 'vendorname']
                 });
 
                 var itemSearchResults = itemSearch.run();
@@ -27,11 +27,13 @@ define(['N/record', 'N/search', 'N/log'],
                         var displayName = results[i].getValue({ name: 'displayname' });
                         var purchaseDescription = results[i].getValue({ name: 'purchasedescription' });
                         var salesDescription = results[i].getValue({ name: 'salesdescription' });
+                        var vendorName = results[i].getValue({ name: 'vendorname' });
 
                         // Check and remove the character from each field
                         var updatedDisplayName = displayName ? displayName.replace(new RegExp(charToRemove, 'g'), '') : null;
                         var updatedPurchaseDescription = purchaseDescription ? purchaseDescription.replace(new RegExp(charToRemove, 'g'), '') : null;
                         var updatedSalesDescription = salesDescription ? salesDescription.replace(new RegExp(charToRemove, 'g'), '') : null;
+                        var updatedVendorName = vendorName ? vendorName.replace(new RegExp(charToRemove, 'g'), '') : null;
 
                         // Load the item record
                         var itemRecord = record.load({
@@ -52,6 +54,10 @@ define(['N/record', 'N/search', 'N/log'],
                         }
                         if (salesDescription !== updatedSalesDescription) {
                             itemRecord.setValue({ fieldId: 'salesdescription', value: updatedSalesDescription });
+                            isModified = true;
+                        }
+                        if (vendorName !== updatedVendorName) {
+                            itemRecord.setValue({ fieldId: 'vendorname', value: updatedVendorName });
                             isModified = true;
                         }
 
